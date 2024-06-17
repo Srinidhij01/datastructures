@@ -1,0 +1,178 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 100
+
+// Queue structure using array
+typedef struct {
+    int items[MAX_SIZE];
+    int front;
+    int rear;
+    int size;
+} QueueArray;
+
+// Function prototypes
+void initializeQueue(QueueArray *queue);
+int isEmpty(QueueArray *queue);
+int isFull(QueueArray *queue);
+void enqueue(QueueArray *queue, int value);
+int dequeue(QueueArray *queue);
+int peek(QueueArray *queue);
+
+// Initialize queue
+void initializeQueue(QueueArray *queue) {
+    queue->front = 0;
+    queue->rear = -1;
+    queue->size = 0;
+}
+
+// Check if queue is empty
+int isEmpty(QueueArray *queue) {
+    return (queue->size == 0);
+}
+
+// Check if queue is full
+int isFull(QueueArray *queue) {
+    return (queue->size == MAX_SIZE);
+}
+
+// Add an element to the rear of the queue
+void enqueue(QueueArray *queue, int value) {
+    if (isFull(queue)) {
+        printf("Queue overflow\n");
+    } else {
+        queue->rear = (queue->rear + 1) % MAX_SIZE;
+        queue->items[queue->rear] = value;
+        queue->size++;
+    }
+}
+
+// Remove and return the element at the front of the queue
+int dequeue(QueueArray *queue) {
+    if (isEmpty(queue)) {
+        printf("Queue underflow\n");
+        return -1; // Return a sentinel value indicating queue underflow
+    } else {
+        int dequeuedValue = queue->items[queue->front];
+        queue->front = (queue->front + 1) % MAX_SIZE;
+        queue->size--;
+        return dequeuedValue;
+    }
+}
+
+// Peek at the front element of the queue
+int peek(QueueArray *queue) {
+    if (isEmpty(queue)) {
+        printf("Queue is empty\n");
+        return -1; // Return a sentinel value indicating queue underflow
+    } else {
+        return queue->items[queue->front];
+    }
+}
+
+// Main function for testing the queue
+int main() {
+    QueueArray queue;
+    initializeQueue(&queue);
+
+    enqueue(&queue, 1);
+    enqueue(&queue, 2);
+    enqueue(&queue, 3);
+
+    printf("Front element after enqueue: %d\n", peek(&queue));
+
+    printf("Dequeued element: %d\n", dequeue(&queue));
+    printf("Dequeued element: %d\n", dequeue(&queue));
+    printf("Front element after dequeue: %d\n", peek(&queue));
+
+    return 0;
+}
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 100
+
+// Queue structure using array
+typedef struct {
+    int items[MAX_SIZE];
+    int front;
+    int rear;
+    int size;
+} QueueArray;
+
+// Function prototypes
+void initializeQueue(QueueArray *queue);
+int isEmpty(QueueArray *queue);
+int isFull(QueueArray *queue);
+void enqueue(QueueArray *queue, int value);
+int dequeue(QueueArray *queue);
+int peek(QueueArray *queue);
+
+// Initialize queue
+void initializeQueue(QueueArray *queue) {
+    queue->front = 0;
+    queue->rear = -1;
+    queue->size = 0;
+}
+
+// Check if queue is empty
+int isEmpty(QueueArray *queue) {
+    return (queue->size == 0);
+}
+
+// Check if queue is full
+int isFull(QueueArray *queue) {
+    return (queue->size == MAX_SIZE);
+}
+
+// Add an element to the rear of the queue
+void enqueue(QueueArray *queue, int value) {
+    if (isFull(queue)) {
+        printf("Queue overflow\n");
+    } else {
+        queue->rear = (queue->rear + 1) % MAX_SIZE;
+        queue->items[queue->rear] = value;
+        queue->size++;
+    }
+}
+
+// Remove and return the element at the front of the queue
+int dequeue(QueueArray *queue) {
+    if (isEmpty(queue)) {
+        printf("Queue underflow\n");
+        return -1; // Return a sentinel value indicating queue underflow
+    } else {
+        int dequeuedValue = queue->items[queue->front];
+        queue->front = (queue->front + 1) % MAX_SIZE;
+        queue->size--;
+        return dequeuedValue;
+    }
+}
+
+// Peek at the front element of the queue
+int peek(QueueArray *queue) {
+    if (isEmpty(queue)) {
+        printf("Queue is empty\n");
+        return -1; // Return a sentinel value indicating queue underflow
+    } else {
+        return queue->items[queue->front];
+    }
+}
+
+// Main function for testing the queue
+int main() {
+    QueueArray queue;
+    initializeQueue(&queue);
+
+    enqueue(&queue, 1);
+    enqueue(&queue, 2);
+    enqueue(&queue, 3);
+
+    printf("Front element after enqueue: %d\n", peek(&queue));
+
+    printf("Dequeued element: %d\n", dequeue(&queue));
+    printf("Dequeued element: %d\n", dequeue(&queue));
+    printf("Front element after dequeue: %d\n", peek(&queue));
+
+    return 0;
+}
