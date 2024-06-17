@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for a term in the polynomial
+struct Term {
+    int coefficient;
+    int exponent;
+    struct Term* next;
+};
+
+// Function to create a new term node
+struct Term* createTerm(int coefficient, int exponent) {
+    struct Term* newTerm = (struct Term*)malloc(sizeof(struct Term));
+    if (newTerm == NULL) {
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
+    newTerm->coefficient = coefficient;
+    newTerm->exponent = exponent;
+    newTerm->next = NULL;
+    return newTerm;
+}
+
+// Function to insert a term into the polynomial (sorted by exponent)
+void insertTerm(struct Term** head, int coefficient, int exponent) {
+    struct Term* newTerm = createTerm(coefficient, exponent);
+    if (*head == NULL || exponent > (*head)->exponent) {
+        newTerm->next = *head;
+        *head = newTerm;
+    } else {
+        struct Term* current = *head;
+        while (current->next != NULL && current->next->exponent >= exponent) {
+            current = current->next;
+        }
+        newTerm->next = current->next;
+        current->next = newTerm;
+    }
+}
+
+// Function to print the polynomial
+void printPolynomial(struct Term* head) {
+    struct Term* current = head;
+    int firstTerm = 1;
+
+    while (current != NULL) {
+        if (current->coefficient != 0) {
+            if (!firstTerm && current->coefficient > 0) {
+                printf(" + ");
+            }
+            if (current->coefficient < 0) {
+                printf(" - ");
+            }
+            if (current->coefficient != 1 && current->coefficient != -1) {
+                printf("%d", abs(current->coefficient));
+            }
+            if (current->exponent != 0) {
+                printf("x");
+                if (current->exponent != 1) {
+                    printf("^%d", current->exponent);
+                }
+            }
+            firstTerm = 0;
+        }
+        current = current->next;
+    }
+    printf("\n");
+}
+
+// Function to free memory allocated to the polynomial
+void freePolynomial(struct Term* head) {
+    struct Term* temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+int main() {
+    struct Term* polynomial = NULL;
+
+    // Inserting terms into the polynomial (3x^2 + 2x + 5)
+    insertTerm(&polynomial, 3, 2);
+    insertTerm(&polynomial, 2, 1);
+    insertTerm(&polynomial, 5, 0);
+
+    // Printing the polynomial
+    printf("Polynomial: ");
+    printPolynomial(polynomial);
+
+    // Freeing memory allocated to the polynomial
+    freePolynomial(polynomial);
+
+    return 0;
+}
