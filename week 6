@@ -1,0 +1,163 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 100
+
+// Stack structure using array
+typedef struct {
+    int items[MAX_SIZE];
+    int top;
+} StackArray;
+
+// Function prototypes
+void initializeStack(StackArray *stack);
+int isEmpty(StackArray *stack);
+int isFull(StackArray *stack);
+void push(StackArray *stack, int value);
+int pop(StackArray *stack);
+int peek(StackArray *stack);
+
+// Initialize stack
+void initializeStack(StackArray *stack) {
+    stack->top = -1;
+}
+
+// Check if stack is empty
+int isEmpty(StackArray *stack) {
+    return (stack->top == -1);
+}
+
+// Check if stack is full
+int isFull(StackArray *stack) {
+    return (stack->top == MAX_SIZE - 1);
+}
+
+// Push an element onto the stack
+void push(StackArray *stack, int value) {
+    if (isFull(stack)) {
+        printf("Stack overflow\n");
+    } else {
+        stack->items[++(stack->top)] = value;
+    }
+}
+
+// Pop an element from the stack
+int pop(StackArray *stack) {
+    if (isEmpty(stack)) {
+        printf("Stack underflow\n");
+        return -1; // Return a sentinel value indicating stack underflow
+    } else {
+        return stack->items[(stack->top)--];
+    }
+}
+
+// Peek at the top element of the stack
+int peek(StackArray *stack) {
+    if (isEmpty(stack)) {
+        printf("Stack is empty\n");
+        return -1; // Return a sentinel value indicating stack underflow
+    } else {
+        return stack->items[stack->top];
+    }
+}
+
+// Main function for testing the stack
+int main() {
+    StackArray stack;
+    initializeStack(&stack);
+
+    push(&stack, 1);
+    push(&stack, 2);
+    push(&stack, 3);
+
+    printf("Top element after pushing: %d\n", peek(&stack));
+
+    printf("Popped element: %d\n", pop(&stack));
+    printf("Popped element: %d\n", pop(&stack));
+    printf("Top element after popping: %d\n", peek(&stack));
+
+    return 0;
+}
+#include <stdio.h>
+#include <stdlib.h>
+
+// Stack structure using linked list
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+typedef struct {
+    Node* top;
+} StackLL;
+
+// Function prototypes
+void initializeStack(StackLL *stack);
+int isEmpty(StackLL *stack);
+void push(StackLL *stack, int value);
+int pop(StackLL *stack);
+int peek(StackLL *stack);
+
+// Initialize stack
+void initializeStack(StackLL *stack) {
+    stack->top = NULL;
+}
+
+// Check if stack is empty
+int isEmpty(StackLL *stack) {
+    return (stack->top == NULL);
+}
+
+// Push an element onto the stack
+void push(StackLL *stack, int value) {
+    Node* newNode = (Node*) malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->next = stack->top;
+    stack->top = newNode;
+}
+
+// Pop an element from the stack
+int pop(StackLL *stack) {
+    if (isEmpty(stack)) {
+        printf("Stack underflow\n");
+        return -1; // Return a sentinel value indicating stack underflow
+    } else {
+        Node* temp = stack->top;
+        int poppedValue = temp->data;
+        stack->top = temp->next;
+        free(temp);
+        return poppedValue;
+    }
+}
+
+// Peek at the top element of the stack
+int peek(StackLL *stack) {
+    if (isEmpty(stack)) {
+        printf("Stack is empty\n");
+        return -1; // Return a sentinel value indicating stack underflow
+    } else {
+        return stack->top->data;
+    }
+}
+
+// Main function for testing the stack
+int main() {
+    StackLL stack;
+    initializeStack(&stack);
+
+    push(&stack, 1);
+    push(&stack, 2);
+    push(&stack, 3);
+
+    printf("Top element after pushing: %d\n", peek(&stack));
+
+    printf("Popped element: %d\n", pop(&stack));
+    printf("Popped element: %d\n", pop(&stack));
+    printf("Top element after popping: %d\n", peek(&stack));
+
+    return 0;
+}
