@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a node structure for doubly linked list
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
+    newNode->data = data;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to insert a node at the beginning of the list
+void insertAtBeginning(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        newNode->next = *head;
+        (*head)->prev = newNode;
+        *head = newNode;
+    }
+}
+
+// Function to insert a node at the end of the list
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        struct Node* temp = *head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->prev = temp;
+    }
+}
+
+// Function to print the doubly linked list
+void printList(struct Node* head) {
+    struct Node* temp = head;
+    printf("Forward: ");
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+// Function to print the doubly linked list in reverse
+void printReverse(struct Node* head) {
+    struct Node* temp = head;
+    if (temp == NULL) {
+        return;
+    }
+    // Going to the last node
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    // Traversing backwards using the prev pointer
+    printf("Reverse: ");
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->prev;
+    }
+    printf("\n");
+}
+
+// Function to free memory allocated to the doubly linked list
+void freeList(struct Node* head) {
+    struct Node* temp;
+    while (head != NULL) {
+        temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+int main() {
+    struct Node* head = NULL;
+
+    // Inserting some nodes into the doubly linked list
+    insertAtEnd(&head, 10);
+    insertAtEnd(&head, 20);
+    insertAtEnd(&head, 30);
+    insertAtBeginning(&head, 5);
+
+    // Printing the doubly linked list
+    printList(head);
+    printReverse(head);
+
+    // Freeing memory allocated to the doubly linked list
+    freeList(head);
+
+    return 0;
+}
